@@ -60,8 +60,7 @@ public class SettingsFragment extends PreferenceFragment {
         operationMode = (ListPreference) findPreference("operationMode");
         operationMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object o) {
-                if (((String) o).equals("local_full_node")
-                        && !(SiaMobileApplication.abi.equals("arm64"))) {
+                if ((o.equals("local_full_node") || o.equals("local_partial_node")) && !Utils.isSiadSupported()) {
                     Utils.snackbar(getView(), "Sorry, but your device's CPU architecture is not supported by Sia's full node", Snackbar.LENGTH_LONG);
                     return false;
                 }

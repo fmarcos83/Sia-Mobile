@@ -230,6 +230,12 @@ public class MainActivity extends AppCompatActivity {
                 displayFragmentClass(WalletFragment.class, "Wallet", R.id.drawer_item_wallet);
                 if (currentlyVisibleFragment instanceof WalletFragment)
                     ((WalletFragment) currentlyVisibleFragment).replaceExpandFrame(new WalletCreateFragment());
+            } else if (resultCode == ModesActivity.LOCAL_PARTIAL_NODE) {
+                displayFragmentClass(FragmentSetupRemote.class, "Remote setup", null);
+                if (Utils.isSiadSupported())
+                    SiaMobileApplication.prefs.edit().putString("operationMode", "local_partial_node").apply();
+                else
+                    Toast.makeText(this, "Sorry, but your device's CPU architecture is not supported by Sia's full node", Toast.LENGTH_LONG).show();
             } else if (resultCode == ModesActivity.REMOTE_FULL_NODE) {
                 SiaMobileApplication.prefs.edit().putString("operationMode", "remote_full_node").apply();
                 displayFragmentClass(FragmentSetupRemote.class, "Remote setup", null);
@@ -239,7 +245,6 @@ public class MainActivity extends AppCompatActivity {
                     SiaMobileApplication.prefs.edit().putString("operationMode", "local_full_node").apply();
                 } else
                     Toast.makeText(this, "Sorry, but your device's CPU architecture is not supported by Sia's full node", Toast.LENGTH_LONG).show();
-                displayFragmentClass(WalletFragment.class, "Wallet", R.id.drawer_item_wallet);
             }
         }
     }
