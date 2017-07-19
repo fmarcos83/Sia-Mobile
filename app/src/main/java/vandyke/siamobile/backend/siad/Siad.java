@@ -61,49 +61,41 @@ public class Siad extends Service {
     @Override
     public void onCreate() {
         startForeground(SIAD_NOTIFICATION, buildSiadNotification("Starting..."));
-        Thread thread = new Thread() {
-            public void run() {
-                siadFile = Utils.copyBinary("siad", Siad.this, false);
-                if (siadFile == null) {
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(new Runnable() {
-                        public void run() {
-                            Utils.notification(Siad.this, SIAD_UNSUPPORTED_NOTIFICATION, R.drawable.ic_dns_white_48dp,
-                                    "Local full node", "Unsupported CPU architecture", false);
+        Thread thread = new Thread(() -> {
+            siadFile = Utils.copyBinary("siad", Siad.this, false);
+            if (siadFile == null) {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> Utils.notification(Siad.this, SIAD_UNSUPPORTED_NOTIFICATION, R.drawable.ic_dns_white_48dp,
+                        "Local full node", "Unsupported CPU architecture", false));
+                stopForeground(true);
+                stopSelf();
+            } else {
+//                stdoutBuffer.setLength(0);
+                ProcessBuilder pb = new ProcessBuilder(siadFile.getAbsolutePath(), "-M", "gctw");
+                pb.redirectErrorStream(true);
+                pb.directory(Utils.getWorkingDirectory(Siad.this));
+                try {
+                    siadProcess = pb.start();
+                    readStdoutThread = new Thread(() -> {
+                        try {
+                            BufferedReader inputReader = new BufferedReader(new InputStreamReader(siadProcess.getInputStream()));
+                            String line;
+                            while ((line = inputReader.readLine()) != null) {
+                                siadNotification(line);
+                                if (line.contains("Finished loading") || line.contains("Done!"))
+                                    WalletMonitorService.staticRefreshAll();
+                            }
+                            inputReader.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                     });
-                    stopForeground(true);
-                    stopSelf();
-                } else {
-//                stdoutBuffer.setLength(0);
-                    ProcessBuilder pb = new ProcessBuilder(siadFile.getAbsolutePath(), "-M", "gctw");
-                    pb.redirectErrorStream(true);
-                    pb.directory(Utils.getWorkingDirectory(Siad.this));
-                    try {
-                        siadProcess = pb.start();
-                        readStdoutThread = new Thread() {
-                            public void run() {
-                                try {
-                                    BufferedReader inputReader = new BufferedReader(new InputStreamReader(siadProcess.getInputStream()));
-                                    String line;
-                                    while ((line = inputReader.readLine()) != null) {
-                                        siadNotification(line);
-                                        if (line.contains("Finished loading") || line.contains("Done!"))
-                                            WalletMonitorService.staticRefreshAll();
-                                    }
-                                    inputReader.close();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        };
-                        readStdoutThread.start();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    readStdoutThread.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-        };
+        });
         thread.start();
     }
 

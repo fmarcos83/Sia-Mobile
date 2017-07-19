@@ -33,37 +33,47 @@ public class GlobalPrefsListener implements SharedPreferences.OnSharedPreference
         SharedPreferences.Editor editor = sharedPreferences.edit();
         switch (key) {
             case "operationMode":
-                if (SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("cold_storage")) {
-                    if (editor.putString("address", "localhost:9990").commit()) {
-                        context.stopService(new Intent(context, SiadMonitorService.class));
-                        context.startService(new Intent(context, ColdStorageService.class));
-                    }
-                } else if (SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("remote_full_node")) {
-                    if (editor.putString("address", sharedPreferences.getString("remoteAddress", "192.168.1.11:9980")).commit()) {
-                        context.stopService(new Intent(context, ColdStorageService.class));
-                        context.stopService(new Intent(context, SiadMonitorService.class));
-                    }
-                } else if (SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("local_full_node")) {
-                    if (editor.putString("address", "localhost:9980").commit()) {
-                        context.stopService(new Intent(context, ColdStorageService.class));
-                        context.startService(new Intent(context, SiadMonitorService.class));
-                    }
-                }
-                new Thread(new Runnable() {
-                    public void run() {
-                        try {
-                            Thread.sleep(1000); // sleep for 1 second to give whatever service/server was started time to start before querying it
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                switch (SiaMobileApplication.prefs.getString("operationMode", "cold_storage")) {
+                    case "cold_storage":
+                        if (editor.putString("address", "localhost:9990").commit()) {
+                            context.stopService(new Intent(context, SiadMonitorService.class));
+                            context.startService(new Intent(context, ColdStorageService.class));
                         }
-                        WalletMonitorService.staticRefreshAll();
+                        break;
+                    case "local_partial_node":
+                        if (editor.putString("address", "localhost:9980").commit()) {
+                            context.stopService(new Intent(context, ColdStorageService.class));
+                            context.stopService(new Intent(context, SiadMonitorService.class));
+                            context.startService(new Intent(context, SiadMonitorService.class));
+                        }
+                        break;
+                    case "remote_full_node":
+                        if (editor.putString("address", sharedPreferences.getString("remoteAddress", "192.168.1.11:9980")).commit()) {
+                            context.stopService(new Intent(context, ColdStorageService.class));
+                            context.stopService(new Intent(context, SiadMonitorService.class));
+                        }
+                        break;
+                    case "local_full_node":
+                        if (editor.putString("address", "localhost:9980").commit()) {
+                            context.stopService(new Intent(context, ColdStorageService.class));
+                            context.startService(new Intent(context, SiadMonitorService.class));
+                        }
+                        break;
+                }
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(1000); // sleep for 1 second to give whatever service/server was started time to start before querying it
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
+                    WalletMonitorService.staticRefreshAll();
                 }).start();
                 break;
             case "monitorRefreshInterval":
                 WalletMonitorService.staticRefreshAll();
             case "runLocalNodeOffWifi":
-                if (!SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("local_full_node"))
+                if (!(SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("local_full_node")
+                        || SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("local_partial_node")))
                     break;
                 ConnectivityManager connectivityManager =
                         (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -77,7 +87,8 @@ public class GlobalPrefsListener implements SharedPreferences.OnSharedPreference
                 }
                 break;
             case "localNodeMinBattery":
-                if (!SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("local_full_node"))
+                if (!(SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("local_full_node")
+                        || SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("local_partial_node")))
                     break;
                 Intent batteryStatus = context.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
                 int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);

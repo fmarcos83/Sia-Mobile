@@ -13,7 +13,8 @@ public class BootReceiver extends BroadcastReceiver {
         if (SiaMobileApplication.prefs.getBoolean("runInBackground", false)) {
             if (SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("cold_storage"))
                 context.startService(new Intent(context, ColdStorageService.class));
-            else if (SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("local_full_node"))
+            else if (SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("local_full_node")
+                    || SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("local_partial_node"))
                 context.startService(new Intent(context, SiadMonitorService.class));
             context.startService(new Intent(context, WalletMonitorService.class));
         }

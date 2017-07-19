@@ -16,7 +16,6 @@ import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import vandyke.siamobile.SiaMobileApplication;
-import vandyke.siamobile.backend.StatusReceiver;
 
 public class SiadMonitorService extends Service {
 
@@ -24,18 +23,16 @@ public class SiadMonitorService extends Service {
 
     @Override
     public void onCreate() {
-        new Thread() {
-            public void run() {
-                statusReceiver = new StatusReceiver();
-                IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-                intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-                HandlerThread handlerThread = new HandlerThread("StatusReceiver");
-                handlerThread.start();
-                Looper looper = handlerThread.getLooper();
-                Handler handler = new Handler(looper);
-                registerReceiver(statusReceiver, intentFilter, null, handler);
-            }
-        }.start();
+        new Thread(() -> {
+            statusReceiver = new StatusReceiver();
+            IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+            intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+            HandlerThread handlerThread = new HandlerThread("StatusReceiver");
+            handlerThread.start();
+            Looper looper = handlerThread.getLooper();
+            Handler handler = new Handler(looper);
+            registerReceiver(statusReceiver, intentFilter, null, handler);
+        }).start();
     }
 
     @Override

@@ -100,6 +100,9 @@ public class SettingsFragment extends PreferenceFragment {
             case "cold_storage":
                 operationMode.setSummary("Cold storage");
                 break;
+            case "local_partial_node":
+                operationMode.setSummary("Local partial node");
+                break;
             case "remote_full_node":
                 operationMode.setSummary("Remote full node");
                 break;
@@ -119,15 +122,23 @@ public class SettingsFragment extends PreferenceFragment {
                         setColdStorageSettingsVisibility();
                         setRemoteSettingsVisibility();
                         setLocalSettingsVisibility();
-                        if (sharedPreferences.getString("operationMode", "cold_storage").equals("cold_storage")) {
-                            operationMode.setSummary("Cold storage");
-                            operationMode.setValueIndex(0);
-                        } else if (sharedPreferences.getString("operationMode", "cold_storage").equals("remote_full_node")) {
-                            operationMode.setSummary("Remote full node");
-                            operationMode.setValueIndex(1);
-                        } else if (sharedPreferences.getString("operationMode", "cold_storage").equals("local_full_node")) {
-                            operationMode.setSummary("Local full node");
-                            operationMode.setValueIndex(2);
+                        switch (SiaMobileApplication.prefs.getString("operationMode", "cold_storage")) {
+                            case "cold_storage":
+                                operationMode.setSummary("Cold storage");
+                                operationMode.setValueIndex(0);
+                                break;
+                            case "local_partial_node":
+                                operationMode.setSummary("Local partial node");
+                                operationMode.setValueIndex(1);
+                                break;
+                            case "remote_full_node":
+                                operationMode.setSummary("Remote full node");
+                                operationMode.setValueIndex(2);
+                                break;
+                            case "local_full_node":
+                                operationMode.setSummary("Local full node");
+                                operationMode.setValueIndex(3);
+                                break;
                         }
                         break;
                     case "monitorRefreshInterval":
@@ -188,7 +199,8 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     private void setLocalSettingsVisibility() {
-        if (SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("local_full_node")) {
+        if (SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("local_full_node")
+                || SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("local_partial_node")) {
             operation.addPreference(runLocalNodeOffWifi);
             operation.addPreference(useExternal);
             operation.addPreference(minBattery);
