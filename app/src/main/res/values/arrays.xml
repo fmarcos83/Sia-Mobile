@@ -10,14 +10,14 @@
     <string-array name="operation_modes_entries">
         <item>Cold storage</item>
         <item>Local partial node</item>
-        <item>Remote full node</item>
         <item>Local full node</item>
+        <item>Remote full node</item>
     </string-array>
     <string-array name="operation_modes_values">
         <item>cold_storage</item>
         <item>local_partial_node</item>
-        <item>remote_full_node</item>
         <item>local_full_node</item>
+        <item>remote_full_node</item>
     </string-array>
 
     <string-array name="theme_entries">

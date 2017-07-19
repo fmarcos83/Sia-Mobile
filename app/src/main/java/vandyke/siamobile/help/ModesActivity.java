@@ -22,8 +22,8 @@ public class ModesActivity extends AppIntro {
     public static int PAPER_WALLET = 1;
     public static int COLD_STORAGE = 2;
     public static int LOCAL_PARTIAL_NODE = 3;
-    public static int REMOTE_FULL_NODE = 4;
-    public static int LOCAL_FULL_NODE = 5;
+    public static int LOCAL_FULL_NODE = 4;
+    public static int REMOTE_FULL_NODE = 5;
 
     private int currentSlide;
 
@@ -58,15 +58,15 @@ public class ModesActivity extends AppIntro {
                 R.drawable.local_node_graphic, ContextCompat.getColor(this, android.R.color.white),
                 ContextCompat.getColor(this, android.R.color.black),
                 ContextCompat.getColor(this, android.R.color.darker_gray)));
-        addSlide(AppIntroFragment.newInstance("Remote full node",
-                "Run a full node on your computer, and control it from Sia Mobile. Allows all Sia features. Some setup required.",
-                R.drawable.remote_node_graphic, ContextCompat.getColor(this, android.R.color.white),
-                ContextCompat.getColor(this, android.R.color.black),
-                ContextCompat.getColor(this, android.R.color.darker_gray)));
         addSlide(AppIntroFragment.newInstance("Local full node",
                 "Run a full node on your device. Completely independent. Allows all Sia features. Must " +
                         "sync the Sia blockchain, which uses significant storage and bandwidth - about 5GB.",
                 R.drawable.local_node_graphic, ContextCompat.getColor(this, android.R.color.white),
+                ContextCompat.getColor(this, android.R.color.black),
+                ContextCompat.getColor(this, android.R.color.darker_gray)));
+        addSlide(AppIntroFragment.newInstance("Remote full node",
+                "Run a full node on your computer, and control it from Sia Mobile. Allows all Sia features. Some setup required.",
+                R.drawable.remote_node_graphic, ContextCompat.getColor(this, android.R.color.white),
                 ContextCompat.getColor(this, android.R.color.black),
                 ContextCompat.getColor(this, android.R.color.darker_gray)));
 
@@ -90,20 +90,20 @@ public class ModesActivity extends AppIntro {
                 if (Utils.isSiadSupported()) {
                     setResult(LOCAL_PARTIAL_NODE);
                 } else {
-                    Toast.makeText(this, "Sorry, but your device's CPU architecture is not supported by Sia's full node", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Sorry, but your device's CPU architecture is not supported by Sia's partial node", Toast.LENGTH_LONG).show();
                     return;
                 }
                 break;
             case 4:
-                setResult(REMOTE_FULL_NODE);
-                break;
-            case 5:
                 if (Utils.isSiadSupported()) {
                     setResult(LOCAL_FULL_NODE);
                 } else {
                     Toast.makeText(this, "Sorry, but your device's CPU architecture is not supported by Sia's full node", Toast.LENGTH_LONG).show();
                     return;
                 }
+                break;
+            case 5:
+                setResult(REMOTE_FULL_NODE);
                 break;
         }
         finish();
@@ -136,10 +136,10 @@ public class ModesActivity extends AppIntro {
                 setSkipText("Start");
                 break;
             case 4:
-                setSkipText("Setup");
+                setSkipText("Start");
                 break;
             case 5:
-                setSkipText("Start");
+                setSkipText("Setup");
                 showSkipButton(true);
                 break;
         }

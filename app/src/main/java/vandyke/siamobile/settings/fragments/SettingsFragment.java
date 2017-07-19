@@ -61,7 +61,7 @@ public class SettingsFragment extends PreferenceFragment {
         operationMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object o) {
                 if ((o.equals("local_full_node") || o.equals("local_partial_node")) && !Utils.isSiadSupported()) {
-                    Utils.snackbar(getView(), "Sorry, but your device's CPU architecture is not supported by Sia's full node", Snackbar.LENGTH_LONG);
+                    Utils.snackbar(getView(), "Sorry, but your device's CPU architecture is not supported by Sia's node", Snackbar.LENGTH_LONG);
                     return false;
                 }
                 return true;
@@ -102,11 +102,11 @@ public class SettingsFragment extends PreferenceFragment {
             case "local_partial_node":
                 operationMode.setSummary("Local partial node");
                 break;
-            case "remote_full_node":
-                operationMode.setSummary("Remote full node");
-                break;
             case "local_full_node":
                 operationMode.setSummary("Local full node");
+                break;
+            case "remote_full_node":
+                operationMode.setSummary("Remote full node");
                 break;
         }
     }
@@ -130,12 +130,12 @@ public class SettingsFragment extends PreferenceFragment {
                                 operationMode.setSummary("Local partial node");
                                 operationMode.setValueIndex(1);
                                 break;
-                            case "remote_full_node":
-                                operationMode.setSummary("Remote full node");
-                                operationMode.setValueIndex(2);
-                                break;
                             case "local_full_node":
                                 operationMode.setSummary("Local full node");
+                                operationMode.setValueIndex(2);
+                                break;
+                            case "remote_full_node":
+                                operationMode.setSummary("Remote full node");
                                 operationMode.setValueIndex(3);
                                 break;
                         }
