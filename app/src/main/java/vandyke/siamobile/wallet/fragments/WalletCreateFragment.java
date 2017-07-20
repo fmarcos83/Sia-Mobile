@@ -20,7 +20,7 @@ import org.json.JSONObject;
 import vandyke.siamobile.R;
 import vandyke.siamobile.api.SiaRequest;
 import vandyke.siamobile.api.Wallet;
-import vandyke.siamobile.backend.WalletMonitorService;
+import vandyke.siamobile.backend.wallet.WalletMonitorService;
 import vandyke.siamobile.misc.Utils;
 
 public class WalletCreateFragment extends Fragment {
@@ -66,7 +66,7 @@ public class WalletCreateFragment extends Fragment {
                             Utils.successSnackbar(view);
                             container.setVisibility(View.GONE);
                             Utils.hideSoftKeyboard(getActivity());
-                            WalletMonitorService.staticRefreshAll();
+                            WalletMonitorService.staticRefresh();
                         }
                         public void onError(SiaRequest.Error error) {
                             error.snackbar(view);
@@ -78,7 +78,7 @@ public class WalletCreateFragment extends Fragment {
                             Utils.successSnackbar(view);
                             container.setVisibility(View.GONE);
                             Utils.hideSoftKeyboard(getActivity());
-                            WalletMonitorService.staticRefreshAll();
+                            WalletMonitorService.staticRefresh();
                         }
                         public void onError(SiaRequest.Error error) {
                             error.snackbar(view);

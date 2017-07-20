@@ -15,10 +15,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.BatteryManager;
 import vandyke.siamobile.SiaMobileApplication;
-import vandyke.siamobile.backend.WalletMonitorService;
 import vandyke.siamobile.backend.coldstorage.ColdStorageService;
 import vandyke.siamobile.backend.siad.Siad;
 import vandyke.siamobile.backend.siad.SiadMonitorService;
+import vandyke.siamobile.backend.wallet.WalletMonitorService;
 
 public class GlobalPrefsListener implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -66,11 +66,11 @@ public class GlobalPrefsListener implements SharedPreferences.OnSharedPreference
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    WalletMonitorService.staticRefreshAll();
+                    WalletMonitorService.staticRefresh();
                 }).start();
                 break;
             case "monitorRefreshInterval":
-                WalletMonitorService.staticRefreshAll();
+                WalletMonitorService.staticPostRunnable();
             case "runLocalNodeOffWifi":
                 if (!(SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("local_full_node")
                         || SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("local_partial_node")))
@@ -101,7 +101,7 @@ public class GlobalPrefsListener implements SharedPreferences.OnSharedPreference
                 if (sharedPreferences.getString("operationMode", "cold_storage").equals("remote_full_node")) {
                     editor.putString("address", sharedPreferences.getString("remoteAddress", "192.168.1.11:9980"));
                     if (editor.commit())
-                        WalletMonitorService.staticRefreshAll();
+                        WalletMonitorService.staticRefresh();
                 }
                 break;
         }

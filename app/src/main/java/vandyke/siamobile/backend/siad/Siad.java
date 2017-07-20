@@ -20,7 +20,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import vandyke.siamobile.MainActivity;
 import vandyke.siamobile.R;
-import vandyke.siamobile.backend.WalletMonitorService;
+import vandyke.siamobile.backend.wallet.WalletMonitorService;
 import vandyke.siamobile.misc.Utils;
 
 import java.io.BufferedReader;
@@ -71,28 +71,31 @@ public class Siad extends Service {
                 stopSelf();
             } else {
 //                stdoutBuffer.setLength(0);
-                ProcessBuilder pb = new ProcessBuilder(siadFile.getAbsolutePath(), "-M", "gctw");
-                pb.redirectErrorStream(true);
-                pb.directory(Utils.getWorkingDirectory(Siad.this));
-                try {
-                    siadProcess = pb.start();
-                    readStdoutThread = new Thread(() -> {
-                        try {
-                            BufferedReader inputReader = new BufferedReader(new InputStreamReader(siadProcess.getInputStream()));
-                            String line;
-                            while ((line = inputReader.readLine()) != null) {
-                                siadNotification(line);
-                                if (line.contains("Finished loading") || line.contains("Done!"))
-                                    WalletMonitorService.staticRefreshAll();
+                    ProcessBuilder pb = new ProcessBuilder(siadFile.getAbsolutePath(), "-M", "gctw");
+                    pb.redirectErrorStream(true);
+                    pb.directory(Utils.getWorkingDirectory(Siad.this));
+                    try {
+                        siadProcess = pb.start();
+                        readStdoutThread = new Thread() {
+                            public void run() {
+                                try {
+                                    BufferedReader inputReader = new BufferedReader(new InputStreamReader(siadProcess.getInputStream()));
+                                    String line;
+                                    while ((line = inputReader.readLine()) != null) {
+                                        siadNotification(line);
+                                        if (line.contains("Finished loading") || line.contains("Done!"))
+                                            WalletMonitorService.staticRefresh();
+                                    }
+                                    inputReader.close();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                            inputReader.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
-                    readStdoutThread.start();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                        };
+                        readStdoutThread.start();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
