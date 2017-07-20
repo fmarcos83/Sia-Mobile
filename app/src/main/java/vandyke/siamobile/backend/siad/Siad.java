@@ -61,7 +61,7 @@ public class Siad extends Service {
     @Override
     public void onCreate() {
         startForeground(SIAD_NOTIFICATION, buildSiadNotification("Starting..."));
-        Thread thread = new Thread(() -> {
+        new Thread(() -> {
             siadFile = Utils.copyBinary("siad", Siad.this, false);
             if (siadFile == null) {
                 Handler handler = new Handler(Looper.getMainLooper());
@@ -71,35 +71,33 @@ public class Siad extends Service {
                 stopSelf();
             } else {
 //                stdoutBuffer.setLength(0);
-                    ProcessBuilder pb = new ProcessBuilder(siadFile.getAbsolutePath(), "-M", "gctw");
-                    pb.redirectErrorStream(true);
-                    pb.directory(Utils.getWorkingDirectory(Siad.this));
-                    try {
-                        siadProcess = pb.start();
-                        readStdoutThread = new Thread() {
-                            public void run() {
-                                try {
-                                    BufferedReader inputReader = new BufferedReader(new InputStreamReader(siadProcess.getInputStream()));
-                                    String line;
-                                    while ((line = inputReader.readLine()) != null) {
-                                        siadNotification(line);
-                                        if (line.contains("Finished loading") || line.contains("Done!"))
-                                            WalletMonitorService.staticRefresh();
-                                    }
-                                    inputReader.close();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
+                ProcessBuilder pb = new ProcessBuilder(siadFile.getAbsolutePath(), "-M", "gctw");
+                pb.redirectErrorStream(true);
+                pb.directory(Utils.getWorkingDirectory(Siad.this));
+                try {
+                    siadProcess = pb.start();
+                    readStdoutThread = new Thread() {
+                        public void run() {
+                            try {
+                                BufferedReader inputReader = new BufferedReader(new InputStreamReader(siadProcess.getInputStream()));
+                                String line;
+                                while ((line = inputReader.readLine()) != null) {
+                                    siadNotification(line);
+                                    if (line.contains("Finished loading") || line.contains("Done!"))
+                                        WalletMonitorService.staticRefresh();
                                 }
+                                inputReader.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
-                        };
-                        readStdoutThread.start();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                        }
+                    };
+                    readStdoutThread.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-        });
-        thread.start();
+        }).start();
     }
 
     @Override
