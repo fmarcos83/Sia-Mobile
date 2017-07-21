@@ -116,6 +116,14 @@ public class ColdStorageHttpServer extends NanoHTTPD {
                     response.put("synced", true);
                     response.put("height", 0);
                     break;
+                case "/renter/files": // TODO: remove; just for testing purposes for now
+                    JSONArray files = new JSONArray();
+                    files.put(new JSONObject().put("siapath", "foo/bar1.txt"));
+                    files.put(new JSONObject().put("siapath", "foo/bar2.txt"));
+                    files.put(new JSONObject().put("siapath", "test/bar.txt"));
+                    files.put(new JSONObject().put("siapath", "test/subdir/bar.txt"));
+                    response.put("files", files);
+                    break;
                 default:
                     response.put("message", "unsupported on cold storage wallet");
                     status = Response.Status.NOT_IMPLEMENTED;

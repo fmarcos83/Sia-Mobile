@@ -7,22 +7,49 @@
 
 package vandyke.siamobile.backend.files;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import vandyke.siamobile.api.Renter;
+import vandyke.siamobile.api.SiaRequest;
 import vandyke.siamobile.backend.BaseMonitorService;
-import vandyke.siamobile.backend.wallet.WalletMonitorService;
 
 import java.util.ArrayList;
 
 public class FilesMonitorService extends BaseMonitorService {
 
     private static FilesMonitorService instance;
-
     private ArrayList<FilesUpdateListener> listeners;
 
-    public void refresh() {
+    private SiaDir root;
 
+    public void refresh() {
+        System.out.println("filesmonitorservice refresh");
+        Renter.files(new SiaRequest.VolleyCallback() {
+            public void onSuccess(JSONObject response) {
+                System.out.println(response);
+                root = new SiaDir("root");
+                try {
+                    JSONArray files = response.getJSONArray("files");
+                    for (int i = 0; i < files.length(); i++) {
+                        JSONObject fileJson = files.getJSONObject(i);
+                        String siapath = fileJson.getString("siapath");
+                        root.addSiaFile(new SiaFile(fileJson), siapath.split("/"), 0);
+                    }
+                    root.printAll();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onError(SiaRequest.Error error) {
+
+            }
+        });
     }
 
     public void onCreate() {
+        root = new SiaDir("root");
         listeners = new ArrayList<>();
         instance = this;
         super.onCreate();

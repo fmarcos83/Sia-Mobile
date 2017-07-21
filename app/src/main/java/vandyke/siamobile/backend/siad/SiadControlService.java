@@ -17,7 +17,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import vandyke.siamobile.SiaMobileApplication;
 
-public class SiadMonitorService extends Service {
+public class SiadControlService extends Service {
 
     private StatusReceiver statusReceiver;
 

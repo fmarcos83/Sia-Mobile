@@ -26,6 +26,7 @@ import java.util.ArrayList;
 public class WalletMonitorService extends BaseMonitorService {
 
     private static WalletMonitorService instance;
+    private ArrayList<WalletUpdateListener> listeners;
 
     public enum WalletStatus {
         NONE, LOCKED, UNLOCKED
@@ -37,8 +38,6 @@ public class WalletMonitorService extends BaseMonitorService {
     private BigDecimal balanceUsd;
     private ArrayList<Transaction> transactions;
     private double syncProgress;
-
-    private ArrayList<WalletUpdateListener> listeners;
 
     private int SYNC_NOTIFICATION = 0;
     private int TRANSACTION_NOTIFICATION = 1;

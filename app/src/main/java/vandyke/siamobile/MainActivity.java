@@ -39,8 +39,7 @@ import butterknife.ButterKnife;
 import vandyke.siamobile.about.AboutActivity;
 import vandyke.siamobile.backend.CleanupService;
 import vandyke.siamobile.backend.coldstorage.ColdStorageService;
-import vandyke.siamobile.backend.siad.SiadMonitorService;
-import vandyke.siamobile.backend.wallet.WalletMonitorService;
+import vandyke.siamobile.backend.siad.SiadControlService;
 import vandyke.siamobile.dialogs.DonateDialog;
 import vandyke.siamobile.files.fragments.FilesFragment;
 import vandyke.siamobile.help.ModesActivity;
@@ -176,11 +175,11 @@ public class MainActivity extends AppCompatActivity {
 
         startService(new Intent(this, CleanupService.class));
         if (SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("local_full_node"))
-            startService(new Intent(this, SiadMonitorService.class));
+            startService(new Intent(this, SiadControlService.class));
         else if (SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("cold_storage"))
             startService(new Intent(this, ColdStorageService.class));
 
-        startService(new Intent(this, WalletMonitorService.class));
+//        startService(new Intent(this, WalletMonitorService.class));
 
         switch (SiaMobileApplication.prefs.getString("startupPage", "wallet")) {
             case "files":

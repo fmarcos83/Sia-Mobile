@@ -13,9 +13,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class SiaFile {
+public class SiaFile extends SiaNode {
 
-    private String siapath;
     private long filesize; // is long enough?
     private boolean available;
     private boolean renewing;
@@ -25,7 +24,8 @@ public class SiaFile {
 
     public SiaFile(JSONObject json) {
         try {
-            siapath = json.getString("siapath");
+            String siapath = json.getString("siapath");
+            name = siapath.substring(siapath.lastIndexOf("/") + 1);
             filesize = json.getLong("filesize");
             available = json.getBoolean("available");
             renewing = json.getBoolean("renewing");
@@ -33,7 +33,7 @@ public class SiaFile {
             uploadProgress = json.getInt("uploadprogress");
             expiration = json.getInt("expiration");
         } catch (JSONException e) {
-            e.printStackTrace();
+//            e.printStackTrace(); TODO: uncomment later
         }
     }
 
@@ -47,10 +47,6 @@ public class SiaFile {
             e.printStackTrace();
         }
         return result;
-    }
-
-    public String getSiapath() {
-        return siapath;
     }
 
     public long getFilesize() {
@@ -75,5 +71,9 @@ public class SiaFile {
 
     public int getExpiration() {
         return expiration;
+    }
+
+    public boolean isDirectory() {
+        return false;
     }
 }

@@ -17,7 +17,7 @@ import android.os.BatteryManager;
 import vandyke.siamobile.SiaMobileApplication;
 import vandyke.siamobile.backend.coldstorage.ColdStorageService;
 import vandyke.siamobile.backend.siad.Siad;
-import vandyke.siamobile.backend.siad.SiadMonitorService;
+import vandyke.siamobile.backend.siad.SiadControlService;
 import vandyke.siamobile.backend.wallet.WalletMonitorService;
 
 public class GlobalPrefsListener implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -35,18 +35,18 @@ public class GlobalPrefsListener implements SharedPreferences.OnSharedPreference
             case "operationMode":
                 if (SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("cold_storage")) {
                     if (editor.putString("address", "localhost:9990").commit()) {
-                        context.stopService(new Intent(context, SiadMonitorService.class));
+                        context.stopService(new Intent(context, SiadControlService.class));
                         context.startService(new Intent(context, ColdStorageService.class));
                     }
                 } else if (SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("remote_full_node")) {
                     if (editor.putString("address", sharedPreferences.getString("remoteAddress", "192.168.1.11:9980")).commit()) {
                         context.stopService(new Intent(context, ColdStorageService.class));
-                        context.stopService(new Intent(context, SiadMonitorService.class));
+                        context.stopService(new Intent(context, SiadControlService.class));
                     }
                 } else if (SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("local_full_node")) {
                     if (editor.putString("address", "localhost:9980").commit()) {
                         context.stopService(new Intent(context, ColdStorageService.class));
-                        context.startService(new Intent(context, SiadMonitorService.class));
+                        context.startService(new Intent(context, SiadControlService.class));
                     }
                 }
                 new Thread(() -> {
