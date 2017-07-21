@@ -16,6 +16,7 @@ import android.net.NetworkInfo;
 import android.os.BatteryManager;
 import vandyke.siamobile.SiaMobileApplication;
 import vandyke.siamobile.backend.coldstorage.ColdStorageService;
+import vandyke.siamobile.backend.files.FilesMonitorService;
 import vandyke.siamobile.backend.siad.Siad;
 import vandyke.siamobile.backend.siad.SiadControlService;
 import vandyke.siamobile.backend.wallet.WalletMonitorService;
@@ -60,6 +61,7 @@ public class GlobalPrefsListener implements SharedPreferences.OnSharedPreference
                 break;
             case "monitorRefreshInterval":
                 WalletMonitorService.staticPostRunnable();
+                FilesMonitorService.staticPostRunnable();
             case "runLocalNodeOffWifi":
                 if (!SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("local_full_node"))
                     break;

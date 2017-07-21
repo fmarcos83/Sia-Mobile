@@ -14,21 +14,43 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.*;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import vandyke.siamobile.R;
 import vandyke.siamobile.backend.BaseMonitorService;
 import vandyke.siamobile.backend.files.FilesMonitorService;
+import vandyke.siamobile.backend.files.SiaDir;
 
 public class FilesFragment extends Fragment implements FilesMonitorService.FilesUpdateListener {
+
+    @BindView(R.id.filesList)
+    public RecyclerView filesList;
+    private FilesListAdapter adapter;
+
+    private SiaDir currentDir;
 
     private ServiceConnection connection;
     private FilesMonitorService filesMonitorService;
     private boolean bound = false;
 
+    private View view;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_files, container, false);
+        view = inflater.inflate(R.layout.fragment_files, container, false);
+        ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
-        return v;
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        filesList.setLayoutManager(layoutManager);
+        filesList.addItemDecoration(new DividerItemDecoration(filesList.getContext(), layoutManager.getOrientation()));
+        adapter = new FilesListAdapter();
+        filesList.setAdapter(adapter);
+
+        return view;
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -38,6 +60,7 @@ public class FilesFragment extends Fragment implements FilesMonitorService.Files
                 filesMonitorService = (FilesMonitorService) ((BaseMonitorService.LocalBinder)service).getService();
                 filesMonitorService.registerListener(FilesFragment.this);
                 filesMonitorService.refresh();
+                adapter.setRootDir(filesMonitorService.getRootDir());
                 bound = true;
             }
             public void onServiceDisconnected(ComponentName name) {
@@ -47,6 +70,11 @@ public class FilesFragment extends Fragment implements FilesMonitorService.Files
         getActivity().bindService(new Intent(getActivity(), FilesMonitorService.class), connection, Context.BIND_AUTO_CREATE);
     }
 
+    public void onFilesUpdate(FilesMonitorService service) {
+        if (currentDir == null)
+            changeCurrentDir(service.getRootDir());
+    }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionRefresh:
@@ -54,7 +82,6 @@ public class FilesFragment extends Fragment implements FilesMonitorService.Files
                     filesMonitorService.refresh();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -71,5 +98,11 @@ public class FilesFragment extends Fragment implements FilesMonitorService.Files
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.toolbar_files, menu);
+    }
+
+    private void changeCurrentDir(SiaDir dir) {
+        currentDir = dir;
+        adapter.setCurrentDir(dir);
+        adapter.notifyDataSetChanged();
     }
 }

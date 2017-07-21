@@ -7,6 +7,7 @@
 
 package vandyke.siamobile.backend.files;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 public class SiaDir extends SiaNode {
@@ -50,13 +51,40 @@ public class SiaDir extends SiaNode {
         return null;
     }
 
+    public ArrayList<SiaNode> getNodes() {
+        ArrayList<SiaNode> result = new ArrayList<>();
+        result.addAll(directories);
+        result.addAll(files);
+        return result;
+    }
+
     public boolean isDirectory() {
         return true;
     }
 
+    public void printAll(PrintStream p, int indent) {
+        indent(p, indent);
+        p.println(name);
+        for (SiaFile file : files) {
+            indent(p, indent + 1);
+            p.println(file.getName());
+        }
+        for (SiaDir dir : directories)
+            dir.printAll(p, indent + 1);
+    }
+
+    private void indent(PrintStream p, int indent) {
+        for (int i = 0; i < indent; i++) {
+            if (i < indent - 1)
+                p.print("   ");
+            else
+                p.print(" |-");
+        }
+    }
+
     public String toString() {
         StringBuilder result = new StringBuilder();
-                result.append("SiaDir: ").append(name);
+        result.append("SiaDir: ").append(name);
         result.append("\nFiles:\n");
         for (SiaFile file : files) {
             result.append(file.getName()).append("\n");
@@ -66,15 +94,5 @@ public class SiaDir extends SiaNode {
             result.append(dir.getName()).append("\n");
         }
         return result.toString();
-    }
-
-    public void print() {
-        System.out.println(toString());
-    }
-
-    public void printAll() {
-        print();
-        for (SiaDir dir : directories)
-            dir.printAll();
     }
 }

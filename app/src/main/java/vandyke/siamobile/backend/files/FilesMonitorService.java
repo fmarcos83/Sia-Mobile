@@ -21,25 +21,30 @@ public class FilesMonitorService extends BaseMonitorService {
     private static FilesMonitorService instance;
     private ArrayList<FilesUpdateListener> listeners;
 
-    private SiaDir root;
+    private SiaDir rootDir;
 
     public void refresh() {
         System.out.println("filesmonitorservice refresh");
+        refreshFiles();
+    }
+
+    public void refreshFiles() {
+        rootDir = new SiaDir("root");
         Renter.files(new SiaRequest.VolleyCallback() {
             public void onSuccess(JSONObject response) {
                 System.out.println(response);
-                root = new SiaDir("root");
                 try {
                     JSONArray files = response.getJSONArray("files");
                     for (int i = 0; i < files.length(); i++) {
                         JSONObject fileJson = files.getJSONObject(i);
                         String siapath = fileJson.getString("siapath");
-                        root.addSiaFile(new SiaFile(fileJson), siapath.split("/"), 0);
+                        rootDir.addSiaFile(new SiaFile(fileJson), siapath.split("/"), 0);
                     }
-                    root.printAll();
+                    rootDir.printAll(System.out, 0);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                sendFilesUpdate();
             }
 
             public void onError(SiaRequest.Error error) {
@@ -49,7 +54,7 @@ public class FilesMonitorService extends BaseMonitorService {
     }
 
     public void onCreate() {
-        root = new SiaDir("root");
+        rootDir = new SiaDir("rootDir");
         listeners = new ArrayList<>();
         instance = this;
         super.onCreate();
@@ -61,7 +66,7 @@ public class FilesMonitorService extends BaseMonitorService {
     }
 
     public interface FilesUpdateListener {
-
+        void onFilesUpdate(FilesMonitorService service);
     }
 
     public void registerListener(FilesUpdateListener listener) {
@@ -70,6 +75,15 @@ public class FilesMonitorService extends BaseMonitorService {
 
     public void unregisterListener(FilesUpdateListener listener) {
         listeners.remove(listener);
+    }
+
+    public void sendFilesUpdate() {
+        for (FilesUpdateListener listener : listeners)
+            listener.onFilesUpdate(this);
+    }
+
+    public SiaDir getRootDir() {
+        return rootDir;
     }
 
     public static void staticRefresh() {
