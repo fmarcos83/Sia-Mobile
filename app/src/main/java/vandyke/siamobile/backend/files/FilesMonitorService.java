@@ -29,11 +29,11 @@ public class FilesMonitorService extends BaseMonitorService {
     }
 
     public void refreshFiles() {
-        rootDir = new SiaDir("root");
         Renter.files(new SiaRequest.VolleyCallback() {
             public void onSuccess(JSONObject response) {
                 System.out.println(response);
                 try {
+                    rootDir = new SiaDir("root", null);
                     JSONArray files = response.getJSONArray("files");
                     for (int i = 0; i < files.length(); i++) {
                         JSONObject fileJson = files.getJSONObject(i);
@@ -48,13 +48,13 @@ public class FilesMonitorService extends BaseMonitorService {
             }
 
             public void onError(SiaRequest.Error error) {
-
+                rootDir = new SiaDir("root", null);
             }
         });
     }
 
     public void onCreate() {
-        rootDir = new SiaDir("rootDir");
+        rootDir = new SiaDir("root", null);
         listeners = new ArrayList<>();
         instance = this;
         super.onCreate();

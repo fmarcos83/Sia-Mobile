@@ -9,6 +9,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:title="Go up"
+        app:showAsAction="always"
+        android:id="@+id/actionGoUpDir"/>
+    <item
         android:title="Refresh"
         app:showAsAction="always"
         android:icon="@drawable/ic_refresh_white_48dp"

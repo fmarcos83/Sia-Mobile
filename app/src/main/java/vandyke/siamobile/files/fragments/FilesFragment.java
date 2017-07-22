@@ -24,6 +24,7 @@ import vandyke.siamobile.R;
 import vandyke.siamobile.backend.BaseMonitorService;
 import vandyke.siamobile.backend.files.FilesMonitorService;
 import vandyke.siamobile.backend.files.SiaDir;
+import vandyke.siamobile.files.FilesListAdapter;
 
 public class FilesFragment extends Fragment implements FilesMonitorService.FilesUpdateListener {
 
@@ -47,7 +48,7 @@ public class FilesFragment extends Fragment implements FilesMonitorService.Files
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         filesList.setLayoutManager(layoutManager);
         filesList.addItemDecoration(new DividerItemDecoration(filesList.getContext(), layoutManager.getOrientation()));
-        adapter = new FilesListAdapter();
+        adapter = new FilesListAdapter(this);
         filesList.setAdapter(adapter);
 
         return view;
@@ -60,7 +61,6 @@ public class FilesFragment extends Fragment implements FilesMonitorService.Files
                 filesMonitorService = (FilesMonitorService) ((BaseMonitorService.LocalBinder)service).getService();
                 filesMonitorService.registerListener(FilesFragment.this);
                 filesMonitorService.refresh();
-                adapter.setRootDir(filesMonitorService.getRootDir());
                 bound = true;
             }
             public void onServiceDisconnected(ComponentName name) {
@@ -75,11 +75,25 @@ public class FilesFragment extends Fragment implements FilesMonitorService.Files
             changeCurrentDir(service.getRootDir());
     }
 
+    public void changeCurrentDir(SiaDir dir) {
+        currentDir = dir;
+        adapter.setCurrentDir(dir);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void goUpDir() {
+        if (currentDir.getParent() != null)
+            changeCurrentDir(currentDir.getParent());
+    }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionRefresh:
                 if (bound)
                     filesMonitorService.refresh();
+                break;
+            case R.id.actionGoUpDir:
+                goUpDir();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -98,11 +112,5 @@ public class FilesFragment extends Fragment implements FilesMonitorService.Files
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.toolbar_files, menu);
-    }
-
-    private void changeCurrentDir(SiaDir dir) {
-        currentDir = dir;
-        adapter.setCurrentDir(dir);
-        adapter.notifyDataSetChanged();
     }
 }

@@ -12,11 +12,13 @@ import java.util.ArrayList;
 
 public class SiaDir extends SiaNode {
 
+    private SiaDir parent;
     private ArrayList<SiaFile> files;
     private ArrayList<SiaDir> directories;
 
-    public SiaDir(String name) {
+    public SiaDir(String name, SiaDir parent) {
         this.name = name;
+        this.parent = parent;
         files = new ArrayList<>();
         directories = new ArrayList<>();
     }
@@ -33,7 +35,7 @@ public class SiaDir extends SiaNode {
             String currentName = path[currentLocation];
             SiaDir nextDir = getImmediateDir(currentName);
             if (nextDir == null) { // directory that is the next step in the path doesn't already exist
-                nextDir = new SiaDir(currentName);
+                nextDir = new SiaDir(currentName, this);
                 addImmediateDir(nextDir);
             }
             nextDir.addSiaFile(file, path, currentLocation + 1);
@@ -56,6 +58,10 @@ public class SiaDir extends SiaNode {
         result.addAll(directories);
         result.addAll(files);
         return result;
+    }
+
+    public SiaDir getParent() {
+        return parent;
     }
 
     public boolean isDirectory() {
