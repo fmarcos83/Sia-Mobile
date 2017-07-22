@@ -149,9 +149,11 @@ public class WalletMonitorService extends BaseMonitorService {
                         Utils.cancelNotification(WalletMonitorService.this, SYNC_NOTIFICATION); // TODO: maybe have separate service for notifications that registers a listener... not sure if worth it
                     } else {
                         syncProgress = ((double) response.getInt("height") / estimatedBlockHeightAt(System.currentTimeMillis() / 1000)) * 100;
-//                        if (!SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("cold_storage"))
-                        Utils.notification(WalletMonitorService.this, SYNC_NOTIFICATION, R.drawable.ic_sync_white_48dp,
-                                "Syncing...", String.format("Progress (estimated): %.2f%%", syncProgress), false);
+                        if (syncProgress == 0)
+                            Utils.cancelNotification(WalletMonitorService.this, SYNC_NOTIFICATION);
+                        else
+                            Utils.notification(WalletMonitorService.this, SYNC_NOTIFICATION, R.drawable.ic_sync_white_48dp,
+                                    "Syncing...", String.format("Progress (estimated): %.2f%%", syncProgress), false);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
