@@ -32,13 +32,13 @@
     </string-array>
 
     <string-array name="startup_entries">
-        <item>Files</item>
+        <item>Renting</item>
         <item>Hosting</item>
         <item>Wallet</item>
         <item>Terminal</item>
     </string-array>
     <string-array name="startup_values">
-        <item>files</item>
+        <item>renting</item>
         <item>hosting</item>
         <item>wallet</item>
         <item>terminal</item>

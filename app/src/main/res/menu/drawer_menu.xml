@@ -12,9 +12,9 @@
             android:id="@+id/main_items"
             android:checkableBehavior="all">
         <item
-                android:id="@+id/drawer_item_files"
+                android:id="@+id/drawer_item_renting"
                 android:icon="@drawable/ic_cloud_white_48dp"
-                android:title="Files"/>
+                android:title="Renting"/>
         <item
                 android:id="@+id/drawer_item_hosting"
                 android:icon="@drawable/ic_folder_shared_white_48dp"

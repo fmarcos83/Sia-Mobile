@@ -46,6 +46,7 @@ import vandyke.siamobile.help.fragments.FragmentSetupRemote;
 import vandyke.siamobile.hosting.fragments.HostingFragment;
 import vandyke.siamobile.links.LinksFragment;
 import vandyke.siamobile.misc.Utils;
+import vandyke.siamobile.renter.RentingFragment;
 import vandyke.siamobile.renter.fragments.FilesFragment;
 import vandyke.siamobile.settings.GlobalPrefsListener;
 import vandyke.siamobile.settings.fragments.SettingsFragment;
@@ -138,8 +139,8 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.closeDrawers();
                 int menuItemId = item.getItemId();
                 switch (menuItemId) {
-                    case R.id.drawer_item_files:
-                        displayFragmentClass(FilesFragment.class, "Files", menuItemId);
+                    case R.id.drawer_item_renting:
+                        displayFragmentClass(RentingFragment.class, "Renting", menuItemId);
                         return true;
                     case R.id.drawer_item_hosting:
                         displayFragmentClass(HostingFragment.class, "Hosting", menuItemId);
@@ -182,8 +183,8 @@ public class MainActivity extends AppCompatActivity {
 //        startService(new Intent(this, WalletMonitorService.class));
 
         switch (SiaMobileApplication.prefs.getString("startupPage", "wallet")) {
-            case "files":
-                displayFragmentClass(FilesFragment.class, "Files", R.id.drawer_item_files);
+            case "renting":
+                displayFragmentClass(RentingFragment.class, "Renting", R.id.drawer_item_renting);
                 break;
             case "hosting":
                 displayFragmentClass(HostingFragment.class, "Hosting", R.id.drawer_item_hosting);
@@ -264,13 +265,14 @@ public class MainActivity extends AppCompatActivity {
         classBackstack.push(clazz);
         if (menuItemId != null)
             navigationView.setCheckedItem(menuItemId);
-
     }
 
     public void onBackPressed() {
         if (drawerLayout.isDrawerVisible(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        } else if (currentlyVisibleFragment instanceof FilesFragment && ((FilesFragment)currentlyVisibleFragment).goUpDir()) {
+        } else if (currentlyVisibleFragment instanceof RentingFragment &&
+                ((RentingFragment) currentlyVisibleFragment).getCurrentlyVisibleFragment() instanceof FilesFragment
+                && ((FilesFragment) ((RentingFragment) currentlyVisibleFragment).getCurrentlyVisibleFragment()).goUpDir()) {
 
         } else if (titleBackstack.size() <= 1) {
             Utils.getDialogBuilder(this)
