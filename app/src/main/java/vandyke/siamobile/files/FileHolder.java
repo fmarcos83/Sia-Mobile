@@ -10,6 +10,7 @@ package vandyke.siamobile.files;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,8 +20,12 @@ public class FileHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.fileLayout)
     public ConstraintLayout layout;
+    @BindView(R.id.fileImage)
+    public ImageView image;
     @BindView(R.id.fileName)
     public TextView fileName;
+    @BindView(R.id.fileSize)
+    public TextView fileSize;
 
     public FileHolder(View itemView) {
         super(itemView);

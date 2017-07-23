@@ -58,11 +58,12 @@ public class FilesFragment extends Fragment implements FilesMonitorService.Files
         super.onActivityCreated(savedInstanceState);
         connection = new ServiceConnection() {
             public void onServiceConnected(ComponentName name, IBinder service) {
-                filesMonitorService = (FilesMonitorService) ((BaseMonitorService.LocalBinder)service).getService();
+                filesMonitorService = (FilesMonitorService) ((BaseMonitorService.LocalBinder) service).getService();
                 filesMonitorService.registerListener(FilesFragment.this);
                 filesMonitorService.refresh();
                 bound = true;
             }
+
             public void onServiceDisconnected(ComponentName name) {
                 bound = false;
             }
@@ -81,9 +82,11 @@ public class FilesFragment extends Fragment implements FilesMonitorService.Files
         adapter.notifyDataSetChanged();
     }
 
-    public void goUpDir() {
-        if (currentDir.getParent() != null)
-            changeCurrentDir(currentDir.getParent());
+    public boolean goUpDir() {
+        if (currentDir.getParent() == null)
+            return false;
+        changeCurrentDir(currentDir.getParent());
+        return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

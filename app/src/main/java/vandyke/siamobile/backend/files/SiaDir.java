@@ -64,8 +64,13 @@ public class SiaDir extends SiaNode {
         return parent;
     }
 
-    public boolean isDirectory() {
-        return true;
+    public long getSize() {
+        long result = 0;
+        for (SiaFile file : files)
+            result += file.getSize();
+        for (SiaDir dir : directories)
+            result += dir.getSize();
+        return result;
     }
 
     public void printAll(PrintStream p, int indent) {

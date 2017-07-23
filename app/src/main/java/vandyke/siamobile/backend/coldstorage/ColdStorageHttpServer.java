@@ -118,10 +118,10 @@ public class ColdStorageHttpServer extends NanoHTTPD {
                     break;
                 case "/renter/files": // TODO: remove; just for testing purposes for now
                     JSONArray files = new JSONArray();
-                    files.put(new JSONObject().put("siapath", "foo/bar1.txt"));
-                    files.put(new JSONObject().put("siapath", "foo/bar2.txt"));
-                    files.put(new JSONObject().put("siapath", "test/bar.txt"));
-                    files.put(new JSONObject().put("siapath", "test/subdir/bar.txt"));
+                    addFile(files, "foo/bar/hi.txt", 4096, true, false, 3, 100, 123000);
+                    addFile(files, "bar/foo/hi.txt", 1024, true, false, 2, 100, 123000);
+                    addFile(files, "bar/foo/hello.png", 1024, true, false, 2, 100, 123000);
+                    addFile(files, "nick/yes.pptx", 2048, true, false, 2, 100, 123000);
                     response.put("files", files);
                     break;
                 default:
@@ -175,5 +175,21 @@ public class ColdStorageHttpServer extends NanoHTTPD {
                 .putString("coldStoragePassword", password)
                 .putBoolean("coldStorageExists", true)
                 .apply();
+    }
+
+    public void addFile(JSONArray files, String siapath, long filesize, boolean available, boolean renewing, double redundancy, int uploadprogress, long expiration) {
+        JSONObject file = new JSONObject();
+        try {
+            file.put("siapath", siapath);
+            file.put("filesize", filesize);
+            file.put("available", available);
+            file.put("renewing", renewing);
+            file.put("redundancy", redundancy);
+            file.put("uploadprogress", uploadprogress);
+            file.put("expiration", expiration);
+            files.put(file);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

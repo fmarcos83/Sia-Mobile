@@ -197,4 +197,33 @@ public class Utils {
         channel.setVibrationPattern(null);
         notificationManager.createNotificationChannel(channel);
     }
+
+    public static String ReadableFilesizeString(long filesize) {
+        double size = filesize;
+        int i;
+        for (i = 0; size > 1024; i++)
+            size /= 1024;
+        String sizeString = "";
+        switch (i) {
+            case 0:
+                sizeString += " B";
+                break;
+            case 1:
+                sizeString += " KB";
+                break;
+            case 2:
+                sizeString += " MB";
+                break;
+            case 3:
+                sizeString += " GB";
+                break;
+            case 4:
+                sizeString += " TB";
+                break;
+            case 5:
+                sizeString += " PB";
+                break;
+        }
+        return String.format("%." + SiaMobileApplication.prefs.getString("displayedDecimalPrecision", "2") + "f %s", size, sizeString);
+    }
 }

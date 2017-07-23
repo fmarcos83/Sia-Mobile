@@ -15,6 +15,7 @@ import vandyke.siamobile.R;
 import vandyke.siamobile.backend.files.SiaDir;
 import vandyke.siamobile.backend.files.SiaNode;
 import vandyke.siamobile.files.fragments.FilesFragment;
+import vandyke.siamobile.misc.Utils;
 
 public class FilesListAdapter extends RecyclerView.Adapter<FileHolder> {
 
@@ -35,13 +36,16 @@ public class FilesListAdapter extends RecyclerView.Adapter<FileHolder> {
     public void onBindViewHolder(FileHolder holder, int position) {
         SiaNode node = currentDir.getNodes().get(position);
         holder.fileName.setText(node.getName());
+        holder.fileSize.setText(Utils.ReadableFilesizeString(node.getSize()));
         if (node instanceof SiaDir) {
             SiaDir dir = (SiaDir)node;
             holder.layout.setOnClickListener(v -> {
-                filesFragment.changeCurrentDir(dir);
+                    filesFragment.changeCurrentDir(dir);
             });
+            holder.image.setImageResource(R.drawable.ic_folder);
         } else {
             holder.layout.setOnClickListener(null);
+            holder.image.setImageResource(R.drawable.ic_file);
         }
     }
 

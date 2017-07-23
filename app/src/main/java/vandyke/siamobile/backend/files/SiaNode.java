@@ -12,7 +12,7 @@ public abstract class SiaNode {
     protected SiaNode parent;
     protected String name;
 
-    public abstract boolean isDirectory();
+    public abstract long getSize();
 
     public String getName() {
         return name;

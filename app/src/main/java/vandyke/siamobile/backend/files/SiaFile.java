@@ -18,7 +18,7 @@ public class SiaFile extends SiaNode {
     private long filesize; // is long enough?
     private boolean available;
     private boolean renewing;
-    private int redundancy;
+    private double redundancy;
     private int uploadProgress;
     private int expiration;
 
@@ -29,7 +29,7 @@ public class SiaFile extends SiaNode {
             filesize = json.getLong("filesize");
             available = json.getBoolean("available");
             renewing = json.getBoolean("renewing");
-            redundancy = json.getInt("redundancy");
+            redundancy = json.getDouble("redundancy");
             uploadProgress = json.getInt("uploadprogress");
             expiration = json.getInt("expiration");
         } catch (JSONException e) {
@@ -49,7 +49,7 @@ public class SiaFile extends SiaNode {
         return result;
     }
 
-    public long getFilesize() {
+    public long getSize() {
         return filesize;
     }
 
@@ -61,7 +61,7 @@ public class SiaFile extends SiaNode {
         return renewing;
     }
 
-    public int getRedundancy() {
+    public double getRedundancy() {
         return redundancy;
     }
 

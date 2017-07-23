@@ -268,9 +268,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onBackPressed() {
-        if (drawerLayout.isDrawerVisible(GravityCompat.START))
+        if (drawerLayout.isDrawerVisible(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        else if (titleBackstack.size() <= 1) {
+        } else if (currentlyVisibleFragment instanceof FilesFragment && ((FilesFragment)currentlyVisibleFragment).goUpDir()) {
+
+        } else if (titleBackstack.size() <= 1) {
             Utils.getDialogBuilder(this)
                     .setTitle("Quit?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
