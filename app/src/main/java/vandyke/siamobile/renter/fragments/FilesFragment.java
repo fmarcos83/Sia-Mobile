@@ -5,7 +5,7 @@
  * included in this source code package. All rights are reserved, with the exception of what is specified there.
  */
 
-package vandyke.siamobile.files.fragments;
+package vandyke.siamobile.renter.fragments;
 
 import android.app.Fragment;
 import android.content.ComponentName;
@@ -18,16 +18,19 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.*;
+import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import vandyke.siamobile.R;
 import vandyke.siamobile.backend.BaseMonitorService;
 import vandyke.siamobile.backend.files.FilesMonitorService;
 import vandyke.siamobile.backend.files.SiaDir;
-import vandyke.siamobile.files.FilesListAdapter;
+import vandyke.siamobile.renter.FilesListAdapter;
 
 public class FilesFragment extends Fragment implements FilesMonitorService.FilesUpdateListener {
 
+    @BindView(R.id.currentDirPath)
+    public TextView currentDirPath;
     @BindView(R.id.filesList)
     public RecyclerView filesList;
     private FilesListAdapter adapter;
@@ -78,6 +81,7 @@ public class FilesFragment extends Fragment implements FilesMonitorService.Files
 
     public void changeCurrentDir(SiaDir dir) {
         currentDir = dir;
+        currentDirPath.setText(currentDir.getFullPath(""));
         adapter.setCurrentDir(dir);
         adapter.notifyDataSetChanged();
     }

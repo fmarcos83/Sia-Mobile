@@ -206,22 +206,22 @@ public class Utils {
         String sizeString = "";
         switch (i) {
             case 0:
-                sizeString += " B";
+                sizeString += "B";
                 break;
             case 1:
-                sizeString += " KB";
+                sizeString += "KB";
                 break;
             case 2:
-                sizeString += " MB";
+                sizeString += "MB";
                 break;
             case 3:
-                sizeString += " GB";
+                sizeString += "GB";
                 break;
             case 4:
-                sizeString += " TB";
+                sizeString += "TB";
                 break;
             case 5:
-                sizeString += " PB";
+                sizeString += "PB";
                 break;
         }
         return String.format("%." + SiaMobileApplication.prefs.getString("displayedDecimalPrecision", "2") + "f %s", size, sizeString);

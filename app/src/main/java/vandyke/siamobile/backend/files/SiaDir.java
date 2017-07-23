@@ -73,6 +73,13 @@ public class SiaDir extends SiaNode {
         return result;
     }
 
+    public String getFullPath(String pathSoFar) {
+        if (parent != null)
+            return parent.getFullPath(name + "/" + pathSoFar);
+        else
+            return pathSoFar;
+    }
+
     public void printAll(PrintStream p, int indent) {
         indent(p, indent);
         p.println(name);
