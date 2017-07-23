@@ -5,7 +5,7 @@
  * included in this source code package. All rights are reserved, with the exception of what is specified there.
  */
 
-package vandyke.siamobile.renter.fragments;
+package vandyke.siamobile.renter.files;
 
 import android.app.Fragment;
 import android.content.ComponentName;
@@ -24,10 +24,10 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import vandyke.siamobile.R;
+import vandyke.siamobile.api.SiaRequest;
 import vandyke.siamobile.backend.BaseMonitorService;
-import vandyke.siamobile.backend.files.FilesMonitorService;
-import vandyke.siamobile.backend.files.SiaDir;
-import vandyke.siamobile.renter.FilesListAdapter;
+import vandyke.siamobile.backend.renting.files.FilesMonitorService;
+import vandyke.siamobile.backend.renting.files.SiaDir;
 
 public class FilesFragment extends Fragment implements FilesMonitorService.FilesUpdateListener {
 
@@ -78,6 +78,10 @@ public class FilesFragment extends Fragment implements FilesMonitorService.Files
     public void onFilesUpdate(FilesMonitorService service) {
         if (currentDir == null)
             changeCurrentDir(service.getRootDir());
+    }
+
+    public void onFilesError(SiaRequest.Error error) {
+        error.snackbar(view);
     }
 
     public void changeCurrentDir(SiaDir dir) {

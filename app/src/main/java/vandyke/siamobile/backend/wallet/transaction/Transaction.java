@@ -74,7 +74,7 @@ public class Transaction {
      * @param json The JSONObject created from the string returned by the /wallet/transactions API request
      * @return ArrayList of transactions generated from the given json. Note it goes from most-to-least-recent
      */
-    public static ArrayList<Transaction> populateTransactions(JSONObject json) {
+    public static ArrayList<Transaction> parseTransactions(JSONObject json) {
         ArrayList<Transaction> transactions = new ArrayList<>();
         try {
             if (!json.isNull("confirmedtransactions")) {

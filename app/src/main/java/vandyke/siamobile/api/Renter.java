@@ -14,4 +14,8 @@ public class Renter {
     public static void files(SiaRequest.VolleyCallback callback) {
         new SiaRequest(GET, "/renter/files", callback).send();
     }
+
+    public static void contracts(SiaRequest.VolleyCallback callback) {
+        new SiaRequest(GET, "/renter/contracts", callback).send();
+    }
 }

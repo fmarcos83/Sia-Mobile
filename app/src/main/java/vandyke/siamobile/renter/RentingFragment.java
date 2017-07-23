@@ -17,10 +17,10 @@ import android.widget.FrameLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import vandyke.siamobile.R;
-import vandyke.siamobile.backend.files.FilesMonitorService;
-import vandyke.siamobile.renter.fragments.ContractsFragment;
-import vandyke.siamobile.renter.fragments.FilesFragment;
-import vandyke.siamobile.renter.fragments.OverviewFragment;
+import vandyke.siamobile.backend.renting.files.FilesMonitorService;
+import vandyke.siamobile.renter.contracts.ContractsFragment;
+import vandyke.siamobile.renter.files.FilesFragment;
+import vandyke.siamobile.renter.overview.OverviewFragment;
 
 public class RentingFragment extends Fragment {
 

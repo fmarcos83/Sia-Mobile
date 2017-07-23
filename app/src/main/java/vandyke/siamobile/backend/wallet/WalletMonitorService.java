@@ -115,7 +115,7 @@ public class WalletMonitorService extends BaseMonitorService {
                 boolean foundMostRecent = false;
                 BigDecimal netOfNewTxs = new BigDecimal("0");
                 transactions.clear();
-                for (Transaction tx : Transaction.populateTransactions(response)) {
+                for (Transaction tx : Transaction.parseTransactions(response)) {
                     if (tx.getTransactionId().equals(mostRecentTxId))
                         foundMostRecent = true;
                     transactions.add(tx);

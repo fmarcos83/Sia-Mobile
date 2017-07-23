@@ -5,7 +5,7 @@
  * included in this source code package. All rights are reserved, with the exception of what is specified there.
  */
 
-package vandyke.siamobile.backend.files;
+package vandyke.siamobile.backend.renting.files;
 
 import java.io.PrintStream;
 import java.util.ArrayList;

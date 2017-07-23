@@ -5,7 +5,7 @@
  * included in this source code package. All rights are reserved, with the exception of what is specified there.
  */
 
-package vandyke.siamobile.renter;
+package vandyke.siamobile.renter.files;
 
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;

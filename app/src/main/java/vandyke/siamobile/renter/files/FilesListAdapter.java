@@ -5,17 +5,16 @@
  * included in this source code package. All rights are reserved, with the exception of what is specified there.
  */
 
-package vandyke.siamobile.renter;
+package vandyke.siamobile.renter.files;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import vandyke.siamobile.R;
-import vandyke.siamobile.backend.files.SiaDir;
-import vandyke.siamobile.backend.files.SiaNode;
+import vandyke.siamobile.backend.renting.files.SiaDir;
+import vandyke.siamobile.backend.renting.files.SiaNode;
 import vandyke.siamobile.misc.Utils;
-import vandyke.siamobile.renter.fragments.FilesFragment;
 
 public class FilesListAdapter extends RecyclerView.Adapter<FileHolder> {
 

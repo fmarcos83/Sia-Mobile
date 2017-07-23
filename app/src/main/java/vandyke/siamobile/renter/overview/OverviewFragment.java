@@ -5,7 +5,7 @@
  * included in this source code package. All rights are reserved, with the exception of what is specified there.
  */
 
-package vandyke.siamobile.renter.fragments;
+package vandyke.siamobile.renter.overview;
 
 import android.app.Fragment;
 import android.os.Bundle;

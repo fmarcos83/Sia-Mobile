@@ -5,7 +5,7 @@
  * included in this source code package. All rights are reserved, with the exception of what is specified there.
  */
 
-package vandyke.siamobile.backend.files;
+package vandyke.siamobile.backend.renting.files;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,7 +48,7 @@ public class FilesMonitorService extends BaseMonitorService {
             }
 
             public void onError(SiaRequest.Error error) {
-                rootDir = new SiaDir("root", null);
+                sendFilesError(error);
             }
         });
     }
@@ -67,6 +67,8 @@ public class FilesMonitorService extends BaseMonitorService {
 
     public interface FilesUpdateListener {
         void onFilesUpdate(FilesMonitorService service);
+
+        void onFilesError(SiaRequest.Error error);
     }
 
     public void registerListener(FilesUpdateListener listener) {
@@ -80,6 +82,11 @@ public class FilesMonitorService extends BaseMonitorService {
     public void sendFilesUpdate() {
         for (FilesUpdateListener listener : listeners)
             listener.onFilesUpdate(this);
+    }
+
+    public void sendFilesError(SiaRequest.Error error) {
+        for (FilesUpdateListener listener : listeners)
+            listener.onFilesError(error);
     }
 
     public SiaDir getRootDir() {

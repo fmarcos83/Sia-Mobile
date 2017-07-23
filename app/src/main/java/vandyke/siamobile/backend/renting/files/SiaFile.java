@@ -5,7 +5,7 @@
  * included in this source code package. All rights are reserved, with the exception of what is specified there.
  */
 
-package vandyke.siamobile.backend.files;
+package vandyke.siamobile.backend.renting.files;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +37,7 @@ public class SiaFile extends SiaNode {
         }
     }
 
-    public ArrayList<SiaFile> getSiaFiles(JSONObject json) {
+    public ArrayList<SiaFile> parseSiaFiles(JSONObject json) {
         ArrayList<SiaFile> result = new ArrayList<>();
         try {
             JSONArray filesArray = json.getJSONArray("files");

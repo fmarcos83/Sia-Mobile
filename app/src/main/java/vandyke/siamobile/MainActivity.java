@@ -40,6 +40,7 @@ import vandyke.siamobile.about.AboutActivity;
 import vandyke.siamobile.backend.CleanupService;
 import vandyke.siamobile.backend.coldstorage.ColdStorageService;
 import vandyke.siamobile.backend.siad.SiadControlService;
+import vandyke.siamobile.backend.wallet.WalletMonitorService;
 import vandyke.siamobile.dialogs.DonateDialog;
 import vandyke.siamobile.help.ModesActivity;
 import vandyke.siamobile.help.fragments.FragmentSetupRemote;
@@ -47,7 +48,7 @@ import vandyke.siamobile.hosting.fragments.HostingFragment;
 import vandyke.siamobile.links.LinksFragment;
 import vandyke.siamobile.misc.Utils;
 import vandyke.siamobile.renter.RentingFragment;
-import vandyke.siamobile.renter.fragments.FilesFragment;
+import vandyke.siamobile.renter.files.FilesFragment;
 import vandyke.siamobile.settings.GlobalPrefsListener;
 import vandyke.siamobile.settings.fragments.SettingsFragment;
 import vandyke.siamobile.terminal.TerminalFragment;
@@ -180,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         else if (SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("cold_storage"))
             startService(new Intent(this, ColdStorageService.class));
 
-//        startService(new Intent(this, WalletMonitorService.class));
+        startService(new Intent(this, WalletMonitorService.class));
 
         switch (SiaMobileApplication.prefs.getString("startupPage", "wallet")) {
             case "renting":
