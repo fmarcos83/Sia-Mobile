@@ -17,7 +17,9 @@ import android.os.IBinder;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,9 +46,8 @@ public class FilesFragment extends Fragment implements FilesMonitorService.Files
     private View view;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_files, container, false);
+        view = inflater.inflate(R.layout.fragment_renting_files, container, false);
         ButterKnife.bind(this, view);
-        setHasOptionsMenu(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         filesList.setLayoutManager(layoutManager);
@@ -93,19 +94,6 @@ public class FilesFragment extends Fragment implements FilesMonitorService.Files
         return true;
     }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.actionRefresh:
-                if (bound)
-                    filesMonitorService.refresh();
-                break;
-            case R.id.actionGoUpDir:
-                goUpDir();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     public void onDestroy() {
         super.onDestroy();
         if (bound) {
@@ -115,9 +103,5 @@ public class FilesFragment extends Fragment implements FilesMonitorService.Files
                 bound = false;
             }
         }
-    }
-
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.toolbar_files, menu);
     }
 }

@@ -12,14 +12,15 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.FrameLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import vandyke.siamobile.R;
+import vandyke.siamobile.backend.files.FilesMonitorService;
+import vandyke.siamobile.renter.fragments.ContractsFragment;
 import vandyke.siamobile.renter.fragments.FilesFragment;
+import vandyke.siamobile.renter.fragments.OverviewFragment;
 
 public class RentingFragment extends Fragment {
 
@@ -33,12 +34,19 @@ public class RentingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_renting, container, false);
         ButterKnife.bind(this, view);
+        setHasOptionsMenu(true);
 
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
+                    case 0:
+                        displayFragmentClass(OverviewFragment.class);
+                        break;
                     case 1:
                         displayFragmentClass(FilesFragment.class);
+                        break;
+                    case 2:
+                        displayFragmentClass(ContractsFragment.class);
                         break;
                 }
             }
@@ -53,6 +61,15 @@ public class RentingFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionRefresh:
+                FilesMonitorService.staticRefresh();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void displayFragmentClass(Class clazz) {
@@ -91,5 +108,9 @@ public class RentingFragment extends Fragment {
 
     public Fragment getCurrentlyVisibleFragment() {
         return currentlyVisibleFragment;
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.toolbar_renting, menu);
     }
 }
