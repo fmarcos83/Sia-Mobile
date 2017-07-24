@@ -17,6 +17,7 @@ import android.widget.FrameLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import vandyke.siamobile.R;
+import vandyke.siamobile.backend.renting.contracts.ContractsMonitorService;
 import vandyke.siamobile.backend.renting.files.FilesMonitorService;
 import vandyke.siamobile.renter.contracts.ContractsFragment;
 import vandyke.siamobile.renter.files.FilesFragment;
@@ -67,6 +68,7 @@ public class RentingFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.actionRefresh:
                 FilesMonitorService.staticRefresh();
+                ContractsMonitorService.staticRefresh();
                 break;
         }
         return super.onOptionsItemSelected(item);

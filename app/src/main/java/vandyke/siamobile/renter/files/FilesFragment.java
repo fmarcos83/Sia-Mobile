@@ -76,8 +76,8 @@ public class FilesFragment extends Fragment implements FilesMonitorService.Files
     }
 
     public void onFilesUpdate(FilesMonitorService service) {
-        if (currentDir == null)
-            changeCurrentDir(service.getRootDir());
+        changeCurrentDir(service.getRootDir());
+        // TODO: stay in current directory if it still exists
     }
 
     public void onFilesError(SiaRequest.Error error) {

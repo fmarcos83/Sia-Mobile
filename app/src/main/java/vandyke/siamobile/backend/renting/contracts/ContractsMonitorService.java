@@ -64,6 +64,10 @@ public class ContractsMonitorService extends BaseMonitorService {
             listener.onContractsError(error);
     }
 
+    public ArrayList<Contract> getContracts() {
+        return contracts;
+    }
+
     public static void staticRefresh() {
         if (instance != null)
             instance.refresh();

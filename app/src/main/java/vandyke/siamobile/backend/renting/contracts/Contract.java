@@ -38,7 +38,7 @@ public class Contract {
             renterFunds = new BigDecimal(json.getString("renterfunds"));
             size = json.getLong("size");
             startHeight = json.getLong("startheight");
-            storageSpending = new BigDecimal(json.getString("storagespending"));
+            storageSpending = new BigDecimal(json.getString("StorageSpending"));
             totalCost = new BigDecimal(json.getString("totalcost"));
             uploadSpending = new BigDecimal(json.getString("uploadspending"));
         } catch (JSONException e) {

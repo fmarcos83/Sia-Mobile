@@ -30,6 +30,7 @@
         <service android:name=".backend.coldstorage.ColdStorageService"/>
         <service android:name=".backend.wallet.WalletMonitorService"/>
         <service android:name=".backend.renting.files.FilesMonitorService"/>
+        <service android:name=".backend.renting.contracts.ContractsMonitorService"/>
 
         <receiver android:name=".backend.BootReceiver">
             <intent-filter>

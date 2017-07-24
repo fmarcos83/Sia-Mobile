@@ -24,14 +24,12 @@ public class FilesMonitorService extends BaseMonitorService {
     private SiaDir rootDir;
 
     public void refresh() {
-        System.out.println("filesmonitorservice refresh");
         refreshFiles();
     }
 
     public void refreshFiles() {
         Renter.files(new SiaRequest.VolleyCallback() {
             public void onSuccess(JSONObject response) {
-                System.out.println(response);
                 try {
                     rootDir = new SiaDir("root", null);
                     JSONArray files = response.getJSONArray("files");
@@ -40,7 +38,6 @@ public class FilesMonitorService extends BaseMonitorService {
                         String siapath = fileJson.getString("siapath");
                         rootDir.addSiaFile(new SiaFile(fileJson), siapath.split("/"), 0);
                     }
-                    rootDir.printAll(System.out, 0);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
