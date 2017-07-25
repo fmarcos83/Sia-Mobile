@@ -11,6 +11,10 @@ import static com.android.volley.Request.Method.GET;
 
 public class Renter {
 
+    public static void renter(SiaRequest.VolleyCallback callback) {
+        new SiaRequest(GET, "/renter", callback).send();
+    }
+
     public static void files(SiaRequest.VolleyCallback callback) {
         new SiaRequest(GET, "/renter/files", callback).send();
     }

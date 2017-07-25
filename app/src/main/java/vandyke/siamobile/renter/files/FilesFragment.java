@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -51,7 +50,7 @@ public class FilesFragment extends Fragment implements FilesMonitorService.Files
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         filesList.setLayoutManager(layoutManager);
-        filesList.addItemDecoration(new DividerItemDecoration(filesList.getContext(), layoutManager.getOrientation()));
+//        filesList.addItemDecoration(new DividerItemDecoration(filesList.getContext(), layoutManager.getOrientation()));
         adapter = new FilesListAdapter(this);
         filesList.setAdapter(adapter);
 

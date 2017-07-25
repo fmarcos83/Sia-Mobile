@@ -16,14 +16,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/renterTabs"
-        app:tabIndicatorColor="@color/colorPrimary"
-        >
+        app:tabIndicatorColor="@color/colorPrimary">
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Overview"
-            android:id="@+id/overviewTab"/>
+            android:text="Allowance"
+            android:id="@+id/allowanceTab"/>
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"

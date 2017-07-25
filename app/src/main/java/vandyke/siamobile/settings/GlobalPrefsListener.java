@@ -38,6 +38,8 @@ public class GlobalPrefsListener implements SharedPreferences.OnSharedPreference
                 if (SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("cold_storage")) {
                     if (editor.putString("address", "localhost:9990").commit()) {
                         context.stopService(new Intent(context, SiadControlService.class));
+                        context.stopService(new Intent(context, ContractsMonitorService.class));
+                        context.stopService(new Intent(context, FilesMonitorService.class));
                         context.startService(new Intent(context, ColdStorageService.class));
                     }
                 } else if (SiaMobileApplication.prefs.getString("operationMode", "cold_storage").equals("remote_full_node")) {

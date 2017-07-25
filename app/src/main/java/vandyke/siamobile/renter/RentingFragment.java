@@ -21,7 +21,7 @@ import vandyke.siamobile.backend.renting.contracts.ContractsMonitorService;
 import vandyke.siamobile.backend.renting.files.FilesMonitorService;
 import vandyke.siamobile.renter.contracts.ContractsFragment;
 import vandyke.siamobile.renter.files.FilesFragment;
-import vandyke.siamobile.renter.overview.OverviewFragment;
+import vandyke.siamobile.renter.overview.AllowanceFragment;
 
 public class RentingFragment extends Fragment {
 
@@ -41,7 +41,7 @@ public class RentingFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
-                        displayFragmentClass(OverviewFragment.class);
+                        displayFragmentClass(AllowanceFragment.class);
                         break;
                     case 1:
                         displayFragmentClass(FilesFragment.class);
