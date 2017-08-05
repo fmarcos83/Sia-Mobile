@@ -21,6 +21,10 @@ class SiaError {
         reason = getReasonFromThrowable(t)
     }
 
+    constructor(reason: Reason) {
+        this.reason = reason
+    }
+
     fun getReasonFromMsg(errorMessage: String): SiaError.Reason {
         return when {
             errorMessage.contains("wallet must be unlocked before it can be used") -> Reason.WALLET_LOCKED

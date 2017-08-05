@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.fragment_wallet_receive.*
 import net.glxn.qrgen.android.QRCode
 import vandyke.siamobile.R
 import vandyke.siamobile.backend.networking.SiaCallback
-import vandyke.siamobile.backend.networking.Wallet
+import vandyke.siamobile.backend.wallet.WalletService
 import vandyke.siamobile.util.GenUtil
 import vandyke.siamobile.util.SnackbarUtil
 
@@ -24,14 +24,16 @@ class WalletReceiveDialog : BaseDialogFragment() {
     override fun create(view: View?, savedInstanceState: Bundle?) {
         walletQrCode.visibility = View.INVISIBLE
 
-        Wallet.address(SiaCallback({ it ->
-            SnackbarUtil.successSnackbar(view)
-            receiveAddress.text = it.address
-            setQrCode(it.address)
-        }, {
-            it.snackbar(view)
-            receiveAddress.text = "${it.reason.msg}\n"
-        }))
+        WalletService.singleAction(activity, {
+            it.address(SiaCallback({ it ->
+                SnackbarUtil.successSnackbar(view)
+                receiveAddress.text = it.address
+                setQrCode(it.address)
+            }, {
+                it.snackbar(view)
+                receiveAddress.text = "${it.reason.msg}\n"
+            }))
+        })
 
         walletAddressCopy.setOnClickListener {
             GenUtil.copyToClipboard(activity, receiveAddress.text)
